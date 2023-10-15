@@ -45,7 +45,7 @@ client.connect(broker)
 client.loop_start() 
 print("Subcribing")
 
-client.subscribe("katy")
+client.subscribe("katya")
 time.sleep(50)
 client.disconnect()
 client.loop_stop()
