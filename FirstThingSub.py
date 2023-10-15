@@ -5,6 +5,9 @@ import serial
 
 broker="broker.emqx.io"
 
+port = "COM4"
+connection = serial.Serial(port, timeout=1)
+
 responses = {'d': 7, 
              'u': 6}
 
@@ -22,11 +25,6 @@ def on_connect(client, userdata, flags, rc):
         print("Connected to MQTT Broker!")
     else:
         print("Failed to connect, return code %d\n", rc)
-
-port = "COM4"
-connection = serial.Serial(port, timeout=1)
-
-
 
 def send_command(cmd: str, response_len: int) -> str:
     str_resp = None
@@ -49,7 +47,3 @@ client.subscribe("katya")
 time.sleep(50)
 client.disconnect()
 client.loop_stop()
-
-
-
-
