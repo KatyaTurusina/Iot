@@ -2,6 +2,11 @@ int latchPin = 5;
 int clockPin = 3;
 int dataPin = 7;       
 
+int minutes = 0;
+int seconds = 0;
+unsigned long lastUpdate = 0;
+bool start = false;
+
 byte digits[10] = {
   B11011101,  // 0
   B01010000,  // 1
@@ -14,11 +19,6 @@ byte digits[10] = {
   B11011111,  // 8
   B11111011   // 9
 };
-
-int minutes = 0;
-int seconds = 0;
-unsigned long lastUpdate = 0;
-bool start = false;
 
 void setup() 
 {
@@ -41,9 +41,9 @@ void loop()
   }
   
   if(start == true){
-    int elapsedSecs = (millis() - lastUpdate) / 1000;
-  	lastUpdate += elapsedSecs * 1000;
-  	seconds += elapsedSecs;
+    int secondsPassed = (millis() - lastUpdate) / 1000;
+  	lastUpdate += secondsPassed * 1000;
+  	seconds += secondsPassed;
   
     if(seconds >= 60) {
       minutes++;
@@ -55,14 +55,7 @@ void loop()
       show_number(minutes % 10);
       show_number(seconds / 10);
       show_number(seconds % 10);
-
-      digitalWrite(latchPin, HIGH);
-      delay(500);
-      
-      digitalWrite(latchPin, LOW);
-
-      digitalWrite(latchPin, HIGH);
-      delay(500);
+      delay(1000);
     }
   } 
 }
