@@ -1,11 +1,6 @@
 int latchPin = 5;      
 int clockPin = 3;
-int dataPin = 7;       
-
-int minutes = 0;
-int seconds = 0;
-unsigned long lastUpdate = 0;
-bool start = false;
+int dataPin = 7;
 
 byte digits[10] = {
   B11011101,  // 0
@@ -27,37 +22,19 @@ void setup()
   pinMode(clockPin, OUTPUT);
   digitalWrite(clockPin, LOW);
   Serial.begin(9600);
+  for (int digit = 9; digit >= 0; digit--) {
+      show_number(digit);
+      delay(1000);
+  	}
 }
 
 void loop() 
 {
-  if (Serial.available() >= 4) {
-    minutes = (Serial.read() - '0') * 10; 
-    minutes += (Serial.read() - '0');
-    seconds = (Serial.read() - '0') * 10;
-    seconds += (Serial.read() - '0');
-    lastUpdate = millis();
-    start = true;
+  if (Serial.available()) {
+    char user_input = Serial.read();
+	int digit = (int)(user_input - '0');
+	show_number(digit);
   }
-  
-  if(start == true){
-    int secondsPassed = (millis() - lastUpdate) / 1000;
-  	lastUpdate += secondsPassed * 1000;
-  	seconds += secondsPassed;
-  
-    if(seconds >= 60) {
-      minutes++;
-      seconds -= 60;
-    }
-
-    if(minutes < minutes + 1) {
-      show_number(minutes / 10);
-      show_number(minutes % 10);
-      show_number(seconds / 10);
-      show_number(seconds % 10);
-      delay(1000);
-    }
-  } 
 }
 
 void show_number(int digit) {
