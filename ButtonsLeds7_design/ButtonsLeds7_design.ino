@@ -51,6 +51,7 @@ void loop() {
     button_pressed = false;
 
     if (!ledOn) {
+      // first ckick
       ledOn = true;
       ledBrightness = 255;
       analogWrite(LED_PIN, ledBrightness);
@@ -62,8 +63,9 @@ void loop() {
   }
 
   if (ledOn && digitalRead(BUTTON_PIN) == PRESSED) {
-    if (millis() - hold_time >= 200) {
+    if (millis() - hold_time >= 100) {
       hold_time = millis();
+      show_number(round((hold_time/3000))%10);
       if (increasingBrightness) {
         ledBrightness += 20;
         if (ledBrightness >= 255) {
@@ -79,7 +81,7 @@ void loop() {
         }
         analogWrite(LED_PIN, ledBrightness);
       }
-      show_number(round((hold_time) / 3000));
+      
     }
   }
 }
