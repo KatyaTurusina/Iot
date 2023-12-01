@@ -12,8 +12,8 @@ volatile int press_count = 0;
 bool button_pressed = false;
 
 bool ledOn = false;
-int ledBrightness = 0;
-bool increasingBrightness = true;
+int brightness_of_led = 0;
+bool brightness_is_increasing = true;
 
 bool digits[10][8] = {
   {1,1,0,1,1,1,0,1},  // 0
@@ -51,14 +51,13 @@ void loop() {
     button_pressed = false;
 
     if (!ledOn) {
-      // first ckick
       ledOn = true;
-      ledBrightness = 255;
-      analogWrite(LED_PIN, ledBrightness);
+      brightness_of_led = 255;
+      analogWrite(LED_PIN, brightness_of_led);
     } else {
       ledOn = false;
-      ledBrightness = 0;
-      analogWrite(LED_PIN, ledBrightness);
+      brightness_of_led = 0;
+      analogWrite(LED_PIN, brightness_of_led);
     }
   }
 
@@ -66,20 +65,20 @@ void loop() {
     if (millis() - hold_time >= 100) {
       hold_time = millis();
       show_number(round((hold_time/3000))%10);
-      if (increasingBrightness) {
-        ledBrightness += 20;
-        if (ledBrightness >= 255) {
-          increasingBrightness = false;
-          ledBrightness = 255;
+      if (brightness_is_increasing) {
+        brightness_of_led += 20;
+        if (brightness_of_led >= 255) {
+          brightness_is_increasing = false;
+          brightness_of_led = 255;
         }
-        analogWrite(LED_PIN, ledBrightness);
+        analogWrite(LED_PIN, brightness_of_led);
       } else {
-        ledBrightness -= 20;
-        if (ledBrightness <= 0) {
-          increasingBrightness = true;
-          ledBrightness = 0;
+        brightness_of_led -= 20;
+        if (brightness_of_led <= 0) {
+          brightness_is_increasing = true;
+          brightness_of_led = 0;
         }
-        analogWrite(LED_PIN, ledBrightness);
+        analogWrite(LED_PIN, brightness_of_led);
       }
       
     }
