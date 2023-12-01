@@ -11,7 +11,7 @@ volatile long int hold_time = 0;
 volatile int press_count = 0;
 bool button_pressed = false;
 
-bool ledOn = false;
+bool led_is_on = false;
 int brightness_of_led = 0;
 bool brightness_is_increasing = true;
 
@@ -50,18 +50,18 @@ void loop() {
   if (button_pressed) {
     button_pressed = false;
 
-    if (!ledOn) {
-      ledOn = true;
+    if (!led_is_on) {
+      led_is_on = true;
       brightness_of_led = 255;
       analogWrite(LED_PIN, brightness_of_led);
     } else {
-      ledOn = false;
+      led_is_on = false;
       brightness_of_led = 0;
       analogWrite(LED_PIN, brightness_of_led);
     }
   }
 
-  if (ledOn && digitalRead(BUTTON_PIN) == PRESSED) {
+  if (led_is_on && digitalRead(BUTTON_PIN) == PRESSED) {
     if (millis() - hold_time >= 100) {
       hold_time = millis();
       show_number(round((hold_time/3000))%10);
